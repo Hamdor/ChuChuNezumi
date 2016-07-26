@@ -113,5 +113,7 @@ public class Walker implements IBehavior {
   public void onPokemonFull() throws LoginFailedException, RemoteServerException {
     transferPokemon(PokemonId.PIDGEY);
     transferPokemon(PokemonId.RATTATA);
+    transferPokemon(PokemonId.SPEAROW);
+    transferPokemon(PokemonId.ZUBAT);
   }
 }

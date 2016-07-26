@@ -2,12 +2,15 @@ package main;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import com.pokegoapi.api.PokemonGo;
+import com.pokegoapi.api.inventory.EggIncubator;
 import com.pokegoapi.api.inventory.Item;
 import com.pokegoapi.api.map.fort.Pokestop;
 import com.pokegoapi.api.map.pokemon.CatchResult;
 import com.pokegoapi.api.map.pokemon.CatchablePokemon;
+import com.pokegoapi.api.pokemon.EggPokemon;
 import com.pokegoapi.api.pokemon.Pokemon;
 import com.pokegoapi.exceptions.LoginFailedException;
 import com.pokegoapi.exceptions.RemoteServerException;
@@ -44,7 +47,7 @@ class Bot {
         behavior.tryLootPokestop(ps);
       // ------ Pokebank full?
       List<Pokemon> pokemons = api.getInventories().getPokebank().getPokemons();
-      if (pokemons.size() >= 250) {
+      if (pokemons.size() >= 200) {
         // Inventory is full
         behavior.onPokemonFull();
       }
@@ -55,6 +58,12 @@ class Bot {
         itemCount += i.getCount();
       if (itemCount >= 350)
         behavior.onInventoryFull();
+      // TODO: Check eggs
+      // TODO: Use eggs which have reached their target reach
+      // TODO: Put unused eggs in incubators
+      for(EggIncubator i : api.getInventories().getIncubators())
+        if (i.getKmTarget() == i.getKmWalked())
+          System.out.println("Egg is read! ...");
     }
   }
   IBehavior behavior;
