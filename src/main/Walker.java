@@ -79,11 +79,14 @@ public class Walker implements IBehavior {
       Printers.print(stop.loot());
   }
   
-  private void dropItem(ItemId id, int keep) {
+  private void dropItem(ItemId id, int keep) throws RemoteServerException, LoginFailedException {
     ItemBag bag = api.getInventories().getItemBag();
     Item item = bag.getItem(id);
+    int toDrop = 0;
     if (item.getCount() > keep)
-      item.setCount(keep);
+      toDrop = (keep - item.getCount()) * -1;
+    if (toDrop > 0)
+      bag.removeItem(id, toDrop);
   }
 
   @Override
@@ -103,6 +106,7 @@ public class Walker implements IBehavior {
     for (Pokemon p : pokemons)
       if (p.getStamina() != max && ! p.getFavorite())
         p.transferPokemon();
+    System.out.println("Dropped pokemons");
   }
 
   @Override

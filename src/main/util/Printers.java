@@ -11,6 +11,7 @@ public class Printers {
     System.out.println("Chances are: ");
     for (Float f : prob.getCaptureProbabilityList())
       System.out.print(f + "     ");
+    System.out.println("");
   }
   
   public static void print(PokestopLootResult loot) {
@@ -19,5 +20,6 @@ public class Printers {
     System.out.print("Items: ");
     for (ItemAward item : loot.getItemsAwarded())
       System.out.print("    " + item.getItemId() + ", Count: " + item.getItemCount());
+    System.out.println("");
   }
 }
