@@ -50,7 +50,10 @@ class Bot {
       }
       // ------ Inventory full?
       Collection<Item> items = api.getInventories().getItemBag().getItems();
-      if (items.size() >= 350)
+      int itemCount = 0;
+      for (Item i : items)
+        itemCount += i.getCount();
+      if (itemCount >= 350)
         behavior.onInventoryFull();
     }
   }
