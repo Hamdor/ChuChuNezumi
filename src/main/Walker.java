@@ -75,8 +75,10 @@ public class Walker implements IBehavior {
 
   @Override
   public void tryLootPokestop(Pokestop stop) throws LoginFailedException, RemoteServerException {
-    if (stop.canLoot())
+    if (stop.canLoot()) {
+      System.out.println("Reached stop: " + stop.getDetails().getName());
       Printers.print(stop.loot());
+    }
   }
   
   private void dropItem(ItemId id, int keep) throws RemoteServerException, LoginFailedException {
@@ -92,8 +94,10 @@ public class Walker implements IBehavior {
   @Override
   public void onInventoryFull() throws LoginFailedException, RemoteServerException {
     // Drop potions and revivers
-    dropItem(ItemId.ITEM_POTION, 10);
-    dropItem(ItemId.ITEM_REVIVE, 10);
+    dropItem(ItemId.ITEM_POTION, 1);
+    dropItem(ItemId.ITEM_REVIVE, 1);
+    dropItem(ItemId.ITEM_POKE_BALL, 60);
+    dropItem(ItemId.ITEM_GREAT_BALL, 30);
   }
   
   private void transferPokemon(PokemonId id) throws LoginFailedException, RemoteServerException {
@@ -104,7 +108,7 @@ public class Walker implements IBehavior {
     for (Pokemon p : pokemons)
       max = Math.max(p.getStamina(), max);
     for (Pokemon p : pokemons)
-      if (p.getStamina() != max && ! p.getFavorite())
+      if (p.getStamina() != max && ! p.isFavorite())
         p.transferPokemon();
     System.out.println("Dropped pokemons");
   }

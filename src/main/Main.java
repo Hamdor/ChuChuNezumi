@@ -2,7 +2,12 @@ package main;
 
 import java.util.ArrayList;
 import com.pokegoapi.api.PokemonGo;
-import com.pokegoapi.auth.GoogleLogin;
+import com.pokegoapi.auth.GoogleAutoCredentialProvider;
+import com.pokegoapi.exceptions.LoginFailedException;
+import com.pokegoapi.exceptions.RemoteServerException;
+import com.pokegoapi.util.SystemTimeImpl;
+import com.pokegoapi.util.Time;
+
 import okhttp3.OkHttpClient;
 
 class Starter {
@@ -75,6 +80,73 @@ class Starter {
     return waypoints;
   }
   
+  public static ArrayList<Waypoint> generateWPs3() {
+    ArrayList<Waypoint> waypoints = new ArrayList<Waypoint>();
+    waypoints.add(new Waypoint(53.5571155, 10.0231906));
+    waypoints.add(new Waypoint(53.55709319, 10.02312891));
+    waypoints.add(new Waypoint(53.55706133, 10.02309136));
+    waypoints.add(new Waypoint(53.55704221, 10.02308063));
+    waypoints.add(new Waypoint(53.55702309, 10.02302967));
+    waypoints.add(new Waypoint(53.46502019, 10.02302967));
+    waypoints.add(new Waypoint(53.55701194, 10.02296798));
+    waypoints.add(new Waypoint(53.5570199, 10.02291701));
+    waypoints.add(new Waypoint(53.55699122, 10.02288215));
+    waypoints.add(new Waypoint(53.55696573, 10.02284191));
+    waypoints.add(new Waypoint(53.55694502, 10.02280168));
+    waypoints.add(new Waypoint(53.55691634, 10.02275876));
+    waypoints.add(new Waypoint(53.55689563, 10.0227239));
+    waypoints.add(new Waypoint(53.55687013, 10.02269171));
+    waypoints.add(new Waypoint(53.55684783, 10.02266757));
+    waypoints.add(new Waypoint(53.55682552, 10.02265952));
+    waypoints.add(new Waypoint(53.55680162, 10.0226622));
+    waypoints.add(new Waypoint(53.55677453, 10.02267025));
+    waypoints.add(new Waypoint(53.55672833, 10.02264611));
+    waypoints.add(new Waypoint(53.55669487, 10.02259247));
+    waypoints.add(new Waypoint(53.55668372, 10.02254419));
+    waypoints.add(new Waypoint(53.55664866, 10.02247445));
+    waypoints.add(new Waypoint(53.55662954, 10.02243422));
+    waypoints.add(new Waypoint(53.55659927, 10.02236716));
+    waypoints.add(new Waypoint(53.55656422, 10.02227328));
+    waypoints.add(new Waypoint(53.55654032, 10.02221964));
+    waypoints.add(new Waypoint(53.55651961, 10.022166));
+    waypoints.add(new Waypoint(53.55649571, 10.02210431));
+    waypoints.add(new Waypoint(53.5564495, 10.02199165));
+    waypoints.add(new Waypoint(53.55643038, 10.02196215));
+    waypoints.add(new Waypoint(53.55640967, 10.0219085));
+    waypoints.add(new Waypoint(53.55638258, 10.0218495));
+    waypoints.add(new Waypoint(53.55634912, 10.02177976));
+    waypoints.add(new Waypoint(53.55633159, 10.02173684));
+    waypoints.add(new Waypoint(53.55630929, 10.02169125));
+    waypoints.add(new Waypoint(53.55627583, 10.02165638));
+    waypoints.add(new Waypoint(53.55624715, 10.02166979));
+    waypoints.add(new Waypoint(53.55620254, 10.02168052));
+    waypoints.add(new Waypoint(53.55615952, 10.02172075));
+    waypoints.add(new Waypoint(53.55613243, 10.02175294));
+    waypoints.add(new Waypoint(53.55609897, 10.02179049));
+    waypoints.add(new Waypoint(53.55605914, 10.02182267));
+    waypoints.add(new Waypoint(53.55604161, 10.02184413));
+    waypoints.add(new Waypoint(53.55600974, 10.02186022));
+    waypoints.add(new Waypoint(53.55598584, 10.02190046));
+    waypoints.add(new Waypoint(53.55595876, 10.02196215));
+    waypoints.add(new Waypoint(53.55651961, 10.02192728));
+    waypoints.add(new Waypoint(53.55590458, 10.02198092));
+    waypoints.add(new Waypoint(53.55586475, 10.02198361));
+    waypoints.add(new Waypoint(53.55584563, 10.02199433));
+    waypoints.add(new Waypoint(53.55582651, 10.02202384));
+    waypoints.add(new Waypoint(53.55581058, 10.0220453));
+    waypoints.add(new Waypoint(53.55578827, 10.02204798));
+    waypoints.add(new Waypoint(53.55577074, 10.0220453));
+    waypoints.add(new Waypoint(53.55573888, 10.02205871));
+    waypoints.add(new Waypoint(53.5557102, 10.02209089));
+    waypoints.add(new Waypoint(53.55567036, 10.02212845));
+    waypoints.add(new Waypoint(53.5556385, 10.02216331));
+    waypoints.add(new Waypoint(53.55560822, 10.02219282));
+    waypoints.add(new Waypoint(53.55556679, 10.02220891));
+    waypoints.add(new Waypoint(53.55554289, 10.02222769));
+    waypoints.add(new Waypoint(53.55551103, 10.02225719));
+    return waypoints;
+  }
+  
  
   public static ArrayList<Waypoint> interpolate(Waypoint start, Waypoint end/*, double resolution*/) {
     double distance = start.distance(end);
@@ -93,21 +165,24 @@ class Starter {
   }
 
   public static void main(String[] args) {
-    // TODO: Wenn token kaputt, argument bei login raus, neues token generieren
-    // und hier rein pasten :-)
-    
-    /*ArrayList<Waypoint> wps = interpolate(new Waypoint(53.46535026, 9.96309006), new Waypoint(53.46108355, 9.94079554));
-    for (Waypoint w : wps)
-      System.out.println(w.getLatitude() + " " + w.getLongitude());*/
-    
-    String token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBiZDEwY2JmMDM2OGQ2MWE0NDBiZjYxZjNiM2EyZDI0NGExODQ5NDcifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhdF9oYXNoIjoiVlNSRzNHN2ZZSWNDdm1UQnh5MFJPQSIsImF1ZCI6Ijg0ODIzMjUxMTI0MC03M3JpM3Q3cGx2azk2cGo0Zjg1dWo4b3RkYXQyYWxlbS5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjEwODMwNjQyMTg0MjI2OTY3OTY0MyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhenAiOiI4NDgyMzI1MTEyNDAtNzNyaTN0N3Bsdms5NnBqNGY4NXVqOG90ZGF0MmFsZW0uYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJlbWFpbCI6InNpbGxpYXRoaWFzQGdvb2dsZW1haWwuY29tIiwiaWF0IjoxNDY5NTI2NjU0LCJleHAiOjE0Njk1MzAyNTR9.gwuMTm4w0KcsRxQsF2rUa4mC1NDrqDdojAFSB-pBg47hhfTvIZk_DTgG-y2tg2Z6H73Fjxd82iTFqN1iU11fmqRMiEvs1btc_NpXZM9A40TnzswkmyW3xiwMiCSakbOlpnts4mrxl186s2G4M8GLC-mlkwXevquQIBAqjRDAcDyr_RHJT0VHTYsVxC9iFLWuGrvMuMYvS50pJq2tIwQhIbJxQR5B3Zqbi0ei5S9Hkm0tQIZsruDTwfi3glvbkCkYqOf9Agah0nUWwvm30DD53Le0Ip56a2FHDwwSp64RzeSK-u0lGU8R6BCO5QFWzaBpKanjhzAFK7KtErUuuVw4uw";
-    OkHttpClient http = new OkHttpClient();
-    try {
-      PokemonGo go = new PokemonGo(new GoogleLogin(http).login(), http);
-      Bot ash_ketchum = new Bot(go, new Walker(generateWPs2(), 3, 5, go));
-      ash_ketchum.run();
-    } catch (Exception e) {
-      System.out.println(e.toString());
+    while(true) {
+      OkHttpClient httpClient = new OkHttpClient();
+      GoogleAutoCredentialProvider login = null;
+      Time time = new SystemTimeImpl();
+      try {
+        login = new GoogleAutoCredentialProvider(httpClient, LoginDetails.USERNAME, LoginDetails.PASSWORD, time);
+        PokemonGo api = new PokemonGo(login, httpClient, time);
+        Bot ash_ketchum = new Bot(api, new Walker(generateWPs2(), 3, 5, api));
+        ash_ketchum.run();
+      } catch (LoginFailedException | RemoteServerException | InterruptedException e) {
+        e.printStackTrace();
+      }
+      // Wait some time till retry
+      try {
+        Thread.sleep(6564);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
     }
   }
 }

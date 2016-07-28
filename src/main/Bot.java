@@ -2,7 +2,6 @@ package main;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import com.pokegoapi.api.PokemonGo;
 import com.pokegoapi.api.inventory.EggIncubator;
@@ -10,6 +9,7 @@ import com.pokegoapi.api.inventory.Item;
 import com.pokegoapi.api.map.fort.Pokestop;
 import com.pokegoapi.api.map.pokemon.CatchResult;
 import com.pokegoapi.api.map.pokemon.CatchablePokemon;
+import com.pokegoapi.api.map.pokemon.NearbyPokemon;
 import com.pokegoapi.api.pokemon.EggPokemon;
 import com.pokegoapi.api.pokemon.Pokemon;
 import com.pokegoapi.exceptions.LoginFailedException;
@@ -41,6 +41,8 @@ class Bot {
         if (res != null)
           behavior.onCatchedPokemon(cp, res);
       }
+      //for (NearbyPokemon np : api.getMap().getNearbyPokemon())
+      //  System.out.println(np.getPokemonId().name() + "  " + np.getDistanceInMeters() + "m");
       // ------------------------------------------------------------------
       // ------ Collect pokestops
       for (Pokestop ps : api.getMap().getMapObjects().getPokestops())
@@ -61,9 +63,10 @@ class Bot {
       // TODO: Check eggs
       // TODO: Use eggs which have reached their target reach
       // TODO: Put unused eggs in incubators
-      for(EggIncubator i : api.getInventories().getIncubators())
-        if (i.getKmTarget() == i.getKmWalked())
-          System.out.println("Egg is read! ...");
+
+      for (EggIncubator i : api.getInventories().getIncubators())
+        if (i.isInUse())
+          if (i.getKmWalked() >= i.getKmTarget()) System.out.println("Egg is useable!!");
     }
   }
   IBehavior behavior;
