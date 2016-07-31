@@ -1,4 +1,4 @@
-package main;
+package controller;
 
 import com.pokegoapi.api.map.fort.Pokestop;
 import com.pokegoapi.api.map.pokemon.CatchResult;
@@ -21,8 +21,10 @@ interface IBehavior {
 
   /**
    * @param cp 
+   * @throws RemoteServerException 
+   * @throws LoginFailedException 
    */
-  void onCatchedPokemon(CatchablePokemon cp, CatchResult result);
+  void onCatchedPokemon(CatchablePokemon cp, CatchResult result) throws LoginFailedException, RemoteServerException;
 
   /**
    * @throws RemoteServerException 

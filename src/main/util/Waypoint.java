@@ -1,5 +1,6 @@
-package main;
-class Waypoint {
+package main.util;
+
+public class Waypoint {
 
   private double latitude;
   private double longitude;
@@ -37,5 +38,21 @@ class Waypoint {
     double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     double d = R * c;
     return d * 1000;
+  }
+  
+  /**
+   * Lineary interpolate
+   * @param A begin
+   * @param B en
+   * @return A Waypoint 
+   */
+  public static Waypoint lerp(Waypoint A, Waypoint B, double t) {
+    double temp = 1.0 - t;
+    double AlatT = A.getLatitude() * temp;
+    double AlonT = A.getLongitude() * temp;
+    double BlatT = B.getLatitude() * t;
+    double BlonT = B.getLongitude() * t;
+    // Final step
+    return new Waypoint(AlatT + BlatT, AlonT + BlonT);
   }
 }
